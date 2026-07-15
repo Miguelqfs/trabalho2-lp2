@@ -1,0 +1,9 @@
+# Binários gerados
+ps
+ps.exe
+*.o
+*.obj
+
+# Saídas de teste locais
+saida*.txt
+compile_warn.txt
