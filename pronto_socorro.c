@@ -54,7 +54,7 @@ static unsigned int rng_state;
 /* Barreira: N pacientes por turno (todos precisam chegar nas duas syncs) */
 pthread_barrier_t barreira;
 
-static const char *nomes_turno[] = {"Manhã", "Tarde", "Noite"};
+static const char *nomes_turno[] = {"Manha", "Tarde", "Noite"};
 
 /* Cada thread paciente recebe apenas o seu id */
 typedef struct {
@@ -103,10 +103,10 @@ static void calcular_stats_turno(int turno)
     stats[turno].gravidade_media =
         (atendidos > 0) ? (double)soma_grav / (double)atendidos : 0.0;
 
-    printf("\n--- Estatísticas [%s] ---\n", nomes_turno[turno]);
+    printf("\n--- Estatisticas [%s] ---\n", nomes_turno[turno]);
     printf("Pacientes atendidos: %d\n", stats[turno].pacientes_atendidos);
-    printf("Internações: %d\n", stats[turno].internacoes);
-    printf("Gravidade média: %.1f\n", stats[turno].gravidade_media);
+    printf("Internacoes: %d\n", stats[turno].internacoes);
+    printf("Gravidade media: %.1f\n", stats[turno].gravidade_media);
     fflush(stdout);
 }
 
@@ -139,7 +139,7 @@ static void *paciente_thread(void *arg)
             die("pthread_mutex_lock");
 
         if (n_registros >= MAX_REGISTROS) {
-            fprintf(stderr, "Prontuário cheio\n");
+            fprintf(stderr, "Prontuario cheio\n");
             pthread_mutex_unlock(&prontuario_mtx);
             exit(EXIT_FAILURE);
         }
@@ -156,7 +156,7 @@ static void *paciente_thread(void *arg)
 
         /* 3) Encaminhamento / internação (recurso separado) */
         if (gravidade >= 4) {
-            printf("Paciente %d: gravidade %d — ENCAMINHADO para internação\n",
+            printf("Paciente %d: gravidade %d - ENCAMINHADO para internacao\n",
                    id, gravidade);
             fflush(stdout);
 
@@ -214,18 +214,18 @@ static void imprimir_relatorio_final(void)
                       ? (100.0 * (double)total_internacoes / (double)total_atendimentos)
                       : 0.0;
 
-    printf("\n=== Relatório do Pronto-Socorro ===\n");
+    printf("\n=== Relatorio do Pronto-Socorro ===\n");
     printf("Total de atendimentos: %d\n", total_atendimentos);
     printf("Por turno:\n");
     for (int t = 0; t < TURNOS; t++) {
-        printf("%s: %d pacientes, %d internações, gravidade média %.1f\n",
+        printf("%s: %d pacientes, %d internacoes, gravidade media %.1f\n",
                nomes_turno[t],
                stats[t].pacientes_atendidos,
                stats[t].internacoes,
                stats[t].gravidade_media);
     }
-    printf("Total de internações: %d\n", total_internacoes);
-    printf("Taxa de internação: %.1f%%\n", taxa);
+    printf("Total de internacoes: %d\n", total_internacoes);
+    printf("Taxa de internacao: %.1f%%\n", taxa);
 
     if (max_idx >= 0) {
         printf("Paciente mais grave: Paciente %d (gravidade %d no turno %s)\n",
@@ -253,7 +253,7 @@ int main(void)
     if (pthread_barrier_init(&barreira, NULL, N_PACIENTES) != 0)
         die("pthread_barrier_init");
 
-    printf("=== Pronto-Socorro: %d pacientes, %d turnos, %d consultórios, %d leitos ===\n\n",
+    printf("=== Pronto-Socorro: %d pacientes, %d turnos, %d consultorios, %d leitos ===\n\n",
            N_PACIENTES, TURNOS, K_CONSULTORIOS, N_LEITOS);
     fflush(stdout);
 
